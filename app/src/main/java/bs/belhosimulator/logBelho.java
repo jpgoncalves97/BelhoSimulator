@@ -14,10 +14,13 @@ import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class logBelho extends AppCompatActivity{
@@ -45,8 +48,8 @@ public class logBelho extends AppCompatActivity{
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-            List<String> contacts = getContactNames();
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contacts);
+            List<contacto> contacts = getContactNames();
+            ArrayAdapter<contacto> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contacts);
             lstNames.setAdapter(adapter);
         }
     }
@@ -63,25 +66,33 @@ public class logBelho extends AppCompatActivity{
         }
     }
 
-    private List<String> getContactNames() {
-        List<String> contacts = new ArrayList<>();
+    private List<contacto> getContactNames() {
+        List<contacto> contacts = new ArrayList<>();
 
         ContentResolver cr = getContentResolver();
 
         Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
 
-        // Move the cursor to first. Also check whether the cursor is empty or not.
-        if (cursor.moveToFirst()) {
-            // Iterate through the cursor
-            do {
-                // Get the contacts name
+        if(cursor.getCount()>0){
+            while(cursor.moveToNext()){
+                String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 String name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                contacts.add(name);
-            } while (cursor.moveToNext());
+                Cursor cursornum = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ id,null, null);
+                if(cursornum.moveToNext()){
+                        String num = cursornum.getString(cursornum.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        contacts.add(new contacto(name, num));
+                }
+                cursornum.close();
+            }
         }
-        // Close the curosor
-        cursor.close();
 
+
+
+
+
+        Collections.sort(contacts,new IgnoreCaseComparator());
+
+        cursor.close();
         return contacts;
     }
 
@@ -91,10 +102,39 @@ public class logBelho extends AppCompatActivity{
 
 
     }
-    public void startPairing(){
-        //enviar mensagem
+    public void startPairing(View view){
 
+        ListView lst=findViewById(R.id.listadecontactos);
+        int pos = lst.getCheckedItemPosition();
+        contacto o = (contacto) lst.getAdapter().getItem(pos);
+
+        //send nudes to o
 
     }
 
+}
+
+class IgnoreCaseComparator implements Comparator<contacto> {
+    public int compare(contacto conA, contacto conB) {
+        return conA.Nome.compareToIgnoreCase(conB.Nome);
+    }
+}
+
+class contacto implements Comparator<contacto> {
+    public String Nome;
+    public String Num;
+
+    contacto(String nome, String num){
+        this.Nome=nome;
+        this.Num=num;
+    }
+
+    @Override
+    public String toString() {
+        return Nome;
+    }
+
+    public int compare(contacto conA, contacto conB) {
+        return conA.Nome.compareToIgnoreCase(conB.Nome);
+    }
 }
