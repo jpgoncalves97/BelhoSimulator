@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <Button
         android:id="@+id/button2"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="94dp"
         android:layout_marginStart="41dp"
         android:layout_marginEnd="41dp"
         android:layout_marginBottom="22dp"
         android:backgroundTint="@android:color/holo_green_light"
+        android:onClick="startPairing"
         android:text="Selecionar"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:onClick="startPairing"
         app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listadecontactos" />
 
     <ListView
         android:id="@+id/listadecontactos"
         android:layout_width="364dp"
-        android:layout_height="492dp"
+        android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="13dp"
-        android:layout_marginBottom="23dp"
+        android:layout_marginBottom="196dp"
         android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,14 +41,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="42dp"
+        android:onClick="gotomainfrombelho"
         android:text="Cancelar"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="24sp"
-        android:onClick="gotomainfrombelho"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Poderao ser cobradas taxas adicionas dependendo do seu tarifario"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listadecontactos" />
     app:layout_constraintBottom_toTopOf="@+id/button2"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

@@ -24,6 +24,7 @@ public class logCu extends AppCompatActivity {
         EditText edtxt=findViewById(R.id.editText);
         String code=edtxt.getText().toString();
 
-
+        finish();
+        startActivity(new Intent(this, CuidadorActivity.class));
     }
 }

@@ -2,7 +2,6 @@ package bs.belhosimulator;
 
 
 import android.Manifest;
-import android.app.ListActivity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,10 +10,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.provider.ContactsContract;
+import android.telephony.SmsManager;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,11 +22,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class logBelho extends AppCompatActivity{
-
-    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     private ListView lstNames;
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
-    ArrayList<String> listItems=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +38,9 @@ public class logBelho extends AppCompatActivity{
     }
 
     private void showContacts() {
-        // Check the SDK version and whether the permission is already granted or not.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        } else {
-            // Android version is lesser than 6.0 or the permission is already granted.
             List<contacto> contacts = getContactNames();
             ArrayAdapter<contacto> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, contacts);
             lstNames.setAdapter(adapter);
-        }
     }
 
     @Override
@@ -99,17 +88,22 @@ public class logBelho extends AppCompatActivity{
     public void gotomainfrombelho(View view){
         finish();
         startActivity(new Intent(this, MainActivity.class));
-
-
     }
+
     public void startPairing(View view){
 
         ListView lst=findViewById(R.id.listadecontactos);
         int pos = lst.getCheckedItemPosition();
         contacto o = (contacto) lst.getAdapter().getItem(pos);
 
-        //send nudes to o
+        //generate new code
+        String code="1243";
 
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(o.Num, null, code, null, null);
+        Toast.makeText(getApplicationContext(), "SMS sent.",Toast.LENGTH_LONG).show();
+
+        
     }
 
 }
