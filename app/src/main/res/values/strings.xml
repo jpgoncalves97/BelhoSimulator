@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">BelhoSimulator</string>
     <string name="action_settings">Settings</string>
+    <string name="gerir_medicamentos">Gerir Medicamentos</string>
+    <string name="gerir_avisos">Gerir Avisos</string>
+    <string name="ltimas_notifica_es">Últimas Notificações</string>
 </resources>
